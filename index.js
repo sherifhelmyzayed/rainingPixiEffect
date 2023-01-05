@@ -1124,13 +1124,23 @@ window.onload = () => {
     window.addEventListener('mouseup', onMouseUp);
 
 
+    // handlers bound to the element only once
+    window.addEventListener('ontouchstart', onMouseDown);
+    window.addEventListener('ontouchmove', onMouseMove);
+    window.addEventListener('ontouchend', onMouseUp);
+
 
     const displayImage = () => {
         application.effectCanvas.dropletManager.killAllDroplets();
 
         window.removeEventListener('mousedown', onMouseDown);
-        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mous`emove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
+        
+        window.removeEventListener('ontouchstart', onMouseDown);
+        window.removeEventListener('ontouchmove', onMouseMove);
+        window.removeEventListener('ontouchend', onMouseUp);
+
         document.getElementById("backgroundImg").style.filter = "blur(0px)";
 
         const canvas = document.getElementsByTagName('canvas')[0];
