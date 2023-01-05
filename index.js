@@ -504,8 +504,6 @@ class DropletManager {
 
     update(width, height) {
 
-        // console.log(this.clearState);
-
         DropletManager.removeLargeOffscreenDroplets(
             width,
             height,
@@ -535,7 +533,6 @@ class DropletManager {
     checkLargeDropletLogic() {
         // Store the length of the array so the for loop doesn't have to do that every run
         const largeDropletsLength = this.largeDroplets.length;
-        // console.log("sd");
 
         for (let i = largeDropletsLength - 1; i >= 0; i--) {
             this.updateLargeDropletSize(this.largeDroplets[i]);
@@ -1091,7 +1088,6 @@ window.onload = () => {
     const percentage = 0.2;
 
     function onMouseDown(ev) {
-        console.log(application.effectCanvas.dropletManager);
         dragging = true;
         pos = { x: ev.x, y: ev.y }
     }
@@ -1124,11 +1120,6 @@ window.onload = () => {
     window.addEventListener('mouseup', onMouseUp);
 
 
-    // handlers bound to the element only once
-    window.addEventListener('ontouchstart', onMouseDown);
-    window.addEventListener('ontouchmove', onMouseMove);
-    window.addEventListener('ontouchend', onMouseUp);
-
 
     const displayImage = () => {
         application.effectCanvas.dropletManager.killAllDroplets();
@@ -1136,10 +1127,7 @@ window.onload = () => {
         window.removeEventListener('mousedown', onMouseDown);
         window.removeEventListener('mous`emove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
-        
-        window.removeEventListener('ontouchstart', onMouseDown);
-        window.removeEventListener('ontouchmove', onMouseMove);
-        window.removeEventListener('ontouchend', onMouseUp);
+
 
         document.getElementById("backgroundImg").style.filter = "blur(0px)";
 
@@ -1149,8 +1137,36 @@ window.onload = () => {
     }
 };
 
+function touchHandler(event) {
+    var touches = event.changedTouches,
+        first = touches[0],
+        type = "";
+    switch (event.type) {
+        case "touchstart": type = "mousedown"; break;
+        case "touchmove": type = "mousemove"; break;
+        case "touchend": type = "mouseup"; break;
+        default: return;
+    }
+
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent(type, true, true, window, 1,
+        first.screenX, first.screenY,
+        first.clientX, first.clientY, false,
+        false, false, false, 0/*left*/, null);
+
+    first.target.dispatchEvent(simulatedEvent);
+    event.preventDefault();
+}
+
+function init() {
+    window.addEventListener("touchstart", touchHandler, true);
+    window.addEventListener("touchmove", touchHandler, true);
+    window.addEventListener("touchend", touchHandler, true);
+    window.addEventListener("touchcancel", touchHandler, true);
+}
 
 const inserHTMLElements = () => {
+    init()
     const body = document.getElementsByTagName('body')[0]
     body.insertAdjacentHTML("afterbegin", `
         <div id="backgroundImg" style="
