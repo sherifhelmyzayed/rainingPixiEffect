@@ -1134,7 +1134,7 @@ window.onload = () => {
         document.getElementById("backgroundImg").style.filter = "blur(0px)";
 
         const canvas = document.getElementsByTagName('canvas')[0];
-        canvas.style.transition = "opacity ease 4s;"
+        canvas.style.transition = "all 4s";
         canvas.style.opacity = 0
     }
 };

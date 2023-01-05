@@ -3,8 +3,3 @@ body{
     padding: 0;
     overflow: hidden;
 }
-
-
-canvas {
-    transition: opacity ease 5s;
-}
